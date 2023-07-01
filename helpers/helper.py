@@ -17,15 +17,16 @@ Async function to load all cogs before starting the Bot. This code runs whenever
 
 Get current directory -> os.path.realpath(os.path.dirname(__file__))
 '''
-async def loadAllCogs(client):
+async def load_cogs(client):
 
-    for file in os.listdir(f'{os.path.realpath(os.path.dirname(__file__))}/cogs'):
+    for file in os.listdir(f'{os.path.realpath(os.path.dirname(__file__))}/../cogs'):
         if file.endswith(".py"):
             fileName = file[:-3]
             try:
                 await client.load_extension(f'cogs.{fileName}')
+                client.logger.info(f'Loaded cog {fileName}')
             except Exception as e:
                 exception = f'{type(e).__name__}: {e}'
-                print(exception)
+                client.logger.error(f'Failed to load cog {fileName} \n {exception}')
 
 
